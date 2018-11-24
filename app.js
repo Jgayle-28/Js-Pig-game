@@ -9,7 +9,7 @@ GAME RULES:
 
 */
 // Declare variables
-let scores, roundScore, activePlayer, gameActive;
+let scores, roundScore, activePlayer, gameActive, prevRoll, winningScore;
 
 // Initialize game
 gameInit();
@@ -45,7 +45,7 @@ document.querySelector('.btn-hold').addEventListener('click', () => {
     document.querySelector(`#score-${activePlayer}`).textContent =
       scores[activePlayer];
     // Check if player won the game
-    if (scores[activePlayer] >= 100) {
+    if (scores[activePlayer] >= winningScore) {
       document.getElementById(`name-${activePlayer}`).textContent = 'WINNER';
       // Hide the dice for the beginning of other players turn
       document.querySelector('.dice').style.display = 'none';
@@ -90,6 +90,8 @@ function gameInit() {
   roundScore = 0;
   activePlayer = 0;
   gameActive = true;
+  prevRoll = 0;
+  winningScore = document.getElementById('winning-score-input').value;
 
   // Reset Game UI elements to 0 or hidden
   document.querySelector('.dice').style.display = 'none';
