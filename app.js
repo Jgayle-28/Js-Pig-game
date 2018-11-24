@@ -9,13 +9,15 @@ GAME RULES:
 
 */
 // Declare variables
-let scores, roundScore, activePlayer, gameActive, prevRoll, winningScore;
+let scores, roundScore, activePlayer, gameActive, rolls, winningScore;
 
 // Initialize game
 gameInit();
 
 // Event listener for dice roll
 document.querySelector('.btn-roll').addEventListener('click', () => {
+  // Previous dice roll
+  let prevRoll = rolls[rolls.length - 1];
   // Checking for active game
   if (gameActive) {
     // Random rumber / Dice roll
@@ -27,7 +29,14 @@ document.querySelector('.btn-roll').addEventListener('click', () => {
     // Update round score if the rolled number not 1
     if (dice !== 1) {
       roundScore += dice;
+      rolls.push(dice);
+      console.log('rolls', rolls);
+      console.log('prevRoll', prevRoll);
       document.getElementById(`current-${activePlayer}`).innerHTML = roundScore;
+      if (prevRoll === 6 && dice === 6) {
+        // If current player rolls two 6s game moves to next player
+        nextPlayer();
+      }
     } else {
       // Change players
       nextPlayer();
@@ -71,6 +80,7 @@ document.querySelector('.btn-new').addEventListener('click', gameInit);
 function nextPlayer() {
   activePlayer === 0 ? (activePlayer = 1) : (activePlayer = 0);
   roundScore = 0;
+  rolls = [];
 
   // Reset the current round score to 0
   document.getElementById('current-0').textContent = '0';
@@ -90,7 +100,8 @@ function gameInit() {
   roundScore = 0;
   activePlayer = 0;
   gameActive = true;
-  prevRoll = 0;
+  rolls = [];
+
   winningScore = document.getElementById('winning-score-input').value;
 
   // Reset Game UI elements to 0 or hidden
